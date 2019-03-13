@@ -1,0 +1,122 @@
+<html>
+<head>
+<meta charset="utf-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Emphasiso 2019</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+<link rel="stylesheet" href="style.css">
+<script src="script.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</head>
+<body onLoad="width_check(w,h)" onresize="width_check(w,h)">
+<p id="demo" style="position:fixed">_</p>
+
+<div id="main" style="overflow:hidden">
+	<div id="col1" class="red" style="width:100%;height:100%;">
+    <div id="background_image_wrap1" style="position:absolute;width:100%;height:100%;"></div>
+    <div id="col1_content" class="white" style="position:absolute;z-index:1;width:100%;height:200px;display:none" data-float-align="left"></div>
+    <div  style="position:absolute;width:100%;height:100%;">
+    	<img id="background_logo_wrap1" src="emphasiso-logo-full.png" alt="event_poster1">
+    </div>
+    	<div id="col_wrap_1" style="position:absolute;width:100%;display:none;background-color:2e0000"></div>
+        <br><br><br><br><br><br><br><br>
+    </div>
+    
+    <div id="col2" class="red" style="width:100%;height:100%;overflow:hidden;position:relative">
+		<div id="col2_content" style="position:static;width:100%;height:100%;z-index:1" data-float-align="left">
+        	<div class="card white" style="width:100%;height:50%;position:absolute;top:10%"></div>
+        </div>
+        <div id="col_wrap_2" style="position:static;width:100%;display:none;background-color:#2e0000"></div>
+    	<div id="background_image_wrap2" style="position:static;width:100%;height:100%;"></div>
+    	
+        <br><br><br><br><br><br><br><br>
+    </div>
+    <div id="col3" class="blue" style="width:100%;height:100%;overflow:hidden;position:relative">
+    	<div id="col3_content" class="card white" style="position:static;width:100%;height:100%;z-index:1" data-float-align="right"></div>
+    	<div id="col_wrap_3" style="position:static;width:100%;display:none;background-color:2e0000"></div>
+        <br><br><br><br><br><br><br><br>
+    </div>
+     <div id="col4" class="green" style="width:100%;height:100%;overflow:hidden;position:relative">
+    	<div id="col4_content" class="card white" style="position:static;width:100%;height:100%;z-index:1" data-float-align="left"></div>
+    	<div id="col_wrap_4" style="position:static;width:100%;display:none;background-color:2e0000"></div>
+        <br><br><br><br><br><br><br><br>
+    </div>
+    
+    
+    
+</div>
+
+</body>
+</html>
+<style>
+#background_logo_wrap1{width:60%}
+#col1{background-image: url("jmi_background.png");background-size: cover;background-repeat: no-repeat;}
+#background_image_wrap1{background-color: #120000; border: 1px solid black; opacity: 0.7; filter: alpha(opacity=60);}
+#background_image_wrap2{background-color: #120000; border: 1px solid black; opacity: 0.5; filter: alpha(opacity=60);}
+/*#col2{background-image: url("background.png")}
+*/
+@media screen and (max-width: 600px) {
+	#background_logo_wrap1{width:90%}
+}
+</style>
+<script>
+function _(a){return document.getElementById(a);}
+//_("col1").innerHTML=_("col1").offsetHeight;
+//_("col1").innerHTML=_("main").children.length;
+var col_height=[];
+w = window.innerWidth;
+h = window.innerHeight;
+var device;
+for(i=1;i<=4;i++){
+	margin=(_("col"+i+"_content").getAttribute("data-float-align")=="left")?"-20%":"20%";
+	_("col"+i+"_content").style.marginLeft=margin;
+	
+}
+function width_check(w,h){
+	if(w < 601){device="mob"} if(w < 992 && w>602){device="tab"}if(w > 992){device="pc"};
+	for(i=1;i<=4;i++){
+		col_height[i]=_("col"+i).offsetHeight
+	}
+	if(w!=window.innerWidth || Math.abs(h-window.innerHeight)>50){
+		//console.log(h-window.innerHeight)
+	_("demo").innerHTML=h;
+	var w = window.innerWidth;
+	var h = window.innerHeight;
+		_("background_logo_wrap1").style.marginLeft = (w-_("background_logo_wrap1").width)/2;
+		_("background_logo_wrap1").style.marginTop = (h-_("background_logo_wrap1").height)/2;
+
+	}
+}
+_("background_logo_wrap1").style.marginLeft = (w-_("background_logo_wrap1").width)/2;
+_("background_logo_wrap1").style.marginTop = (h-_("background_logo_wrap1").height)/2;
+window.onscroll = function() {scroll_fun()};
+
+function scroll_fun(){
+    var tmp1=active_col=pre_active_col=0;
+    for(i=1;i<=3;i++){
+        if (document.body.scrollTop > tmp1){
+            tmp1+=col_height[i];
+            pre_active_col=active_col;
+            active_col++;
+       }
+    }
+    //if(document.body.scrollTop-tmp1)
+    remaning_col=(tmp1-document.body.scrollTop)/col_height[active_col+1];
+    if(remaning_col<.6 && active_col!=0){ 
+        _("col_wrap_"+active_col).style.display="block"
+        _("col_wrap_"+active_col).style.height=col_height[active_col]
+        _("col_wrap_"+active_col).style.opacity = 1-2*remaning_col
+		_("col_wrap_"+active_col).style.backgroundColor="2e0000";
+		//_("col"+(active_col+1)+"_content").style.marginLeft=parseInt(_("col"+(active_col+1)+"_content").style.marginLeft)-parseInt(_("col"+(active_col+1)+"_content").style.marginLeft)*(1-remaning_col)+"%"
+		
+    }else if(active_col!=0){_("col_wrap_"+active_col).style.display="none"}
+	pre_active_col_vector=(_("col"+active_col+"_content").getAttribute("data-float-align")=="left")?"-1":"1";
+	active_col_vector=(_("col"+(active_col+1)+"_content").getAttribute("data-float-align")=="left")?"-1":"1";
+	if(active_col!=0){_("col"+(active_col)+"_content").style.marginLeft=pre_active_col_vector*20*(1-remaning_col)+"%"}
+	_("col"+(active_col+1)+"_content").style.marginLeft=active_col_vector*20*(remaning_col)+"%"
+	console.log(20*(remaning_col))
+//_("demo").innerHTML=remaning_col+"_"+active_col+"_"+pre_active_col;
+
+  
+}
+</script>
